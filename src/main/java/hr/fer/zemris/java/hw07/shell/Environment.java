@@ -93,9 +93,38 @@ public interface Environment {
 	 *            - novi simbol
 	 */
 	void setMorelinesSymbol(Character symbol);
-	
+
+	/**
+	 * Metoda vraća trenutni direktorij
+	 * 
+	 * @return trenutni direktorij
+	 */
 	Path getCurrentDirectory();
+
+	/**
+	 * Metoda postavlja trenutni direktorij
+	 * 
+	 * @param path
+	 *            - novi radni direktorij
+	 */
 	void setCurrentDirectory(Path path);
+
+	/**
+	 * Metoda vraća trenutnu tablicu zajedničkih vrijednosti
+	 * 
+	 * @param key
+	 *            ključ
+	 * @return vrijednost
+	 */
 	Object getSharedData(String key);
+
+	/**
+	 * Metoda postavlja zajedničke vrijednosti
+	 * 
+	 * @param key
+	 *            - ključ
+	 * @param value
+	 *            - vrijednost
+	 */
 	void setSharedData(String key, Object value);
 }

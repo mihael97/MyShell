@@ -36,6 +36,10 @@ public class DropdShellCommand implements ShellCommand {
 	/**
 	 * Metoda koja izvodi naredbu brisanje bivšeg radnog direktorija
 	 * 
+	 * @param env
+	 *            - ljuska
+	 * @param arguments
+	 *            - argumenti
 	 * @return {@link ShellStatus} za nastavak programa
 	 */
 	@Override

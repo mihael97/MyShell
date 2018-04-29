@@ -52,8 +52,14 @@ public class MyShell implements Environment {
 	 */
 	public static Scanner sc;
 
+	/**
+	 * Trenutni radni direktorij
+	 */
 	private Path currentDirectory;
 
+	/**
+	 * Mapa zajedničkih vrijednosti
+	 */
 	private Map<String, Object> sharedMap;
 
 	/**
@@ -222,11 +228,25 @@ public class MyShell implements Environment {
 		MORELINESSYMBOL = Objects.requireNonNull(symbol);
 	}
 
+	/**
+	 * Metoda vraća trenutni radni direktorij
+	 * 
+	 * @return trenutni direktorij
+	 */
 	@Override
 	public Path getCurrentDirectory() {
 		return currentDirectory;
 	}
 
+	/**
+	 * Metoda postavlja sljedeći radni direktorij
+	 * 
+	 * @param path+novi
+	 *            direktorij
+	 * 
+	 * @throws ShellIOException
+	 *             - ako path nije točan
+	 */
 	@Override
 	public void setCurrentDirectory(Path path) {
 		try {
@@ -236,6 +256,14 @@ public class MyShell implements Environment {
 		}
 	}
 
+	/**
+	 * Metoda vraća trenutne zajedničke vrijendosti
+	 * 
+	 * @param key
+	 *            - ključ
+	 * 
+	 * @return vrijednost
+	 */
 	@Override
 	public Object getSharedData(String key) {
 		if (!sharedMap.containsKey(key)) {
@@ -245,6 +273,18 @@ public class MyShell implements Environment {
 		return sharedMap.get(key);
 	}
 
+	/**
+	 * Metoda postavlja trenutne zajedničke vrijendosti
+	 * 
+	 * @param key
+	 *            - ključ
+	 * 
+	 * 
+	 * @param vrijednost
+	 * 
+	 * @throws ShellIOException
+	 *             - ako je jedan od argumenata null
+	 */
 	@Override
 	public void setSharedData(String key, Object value) {
 		if (key == null || value == null) {

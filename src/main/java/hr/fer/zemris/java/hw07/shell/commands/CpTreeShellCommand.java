@@ -37,6 +37,12 @@ public class CpTreeShellCommand implements ShellCommand {
 	/**
 	 * Metoda koja izvodi naredbu za kopiranje cijelog stabla direktorija
 	 * 
+	 * @param env
+	 *            - ljuska
+	 * 
+	 * @param arguments
+	 *            - argumenti
+	 * 
 	 * @return {@link ShellStatus} za nastavak programa
 	 */
 	@Override

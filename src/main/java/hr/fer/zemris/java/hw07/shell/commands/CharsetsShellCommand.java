@@ -35,6 +35,11 @@ public class CharsetsShellCommand implements ShellCommand {
 	/**
 	 * Metoda koja izvodi naredbu za ispis svih podržanih charsetova
 	 * 
+	 * @param env
+	 *            - ljuska
+	 * @param arguments
+	 *            - argumenti
+	 * 
 	 * @return {@link ShellStatus} za nastavak programa
 	 */
 	@Override

@@ -36,6 +36,10 @@ public class ListdShellCommand implements ShellCommand {
 	/**
 	 * Metoda ispisuje sve zadnje direkotorije,počevši od najnovijeg
 	 * 
+	 * @param env
+	 *            - ljuska
+	 * @param arguments
+	 *            - argumenti
 	 * @return {@link ShellStatus} za nastavak programa
 	 */
 	@Override
