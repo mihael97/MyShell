@@ -11,13 +11,18 @@ import java.util.regex.Pattern;
 import hr.fer.zemris.java.hw07.shell.Environment;
 import hr.fer.zemris.java.hw07.shell.ShellCommand;
 import hr.fer.zemris.java.hw07.shell.ShellStatus;
+import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.ExecutorNameBuilder;
+import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.NameBuilder;
+import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.NameBuilderInfo;
+import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.NameBuilderParser;
+import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.RegexInfo;
 
 public class MassrenameShellCommand implements ShellCommand {
 
 	/**
 	 * Ime naredbe
 	 */
-	private final static String name = "charsets";
+	private final static String name = "massrename";
 	/**
 	 * Opis naredbe
 	 */
@@ -29,12 +34,12 @@ public class MassrenameShellCommand implements ShellCommand {
 	public MassrenameShellCommand() {
 		description.add("Command contains methods for renaming and moving directories");
 	}
-	
+
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		String[] argumentArray = Functions.split(arguments, 5);
-		Path path1 = Paths.get(argumentArray[0]).resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(argumentArray[1]).resolve(env.getCurrentDirectory());
+		Path path1 = Paths.get(argumentArray[0]);//.resolve(env.getCurrentDirectory());
+		Path path2 = Paths.get(argumentArray[1]);//.resolve(env.getCurrentDirectory());
 
 		switch (argumentArray[2]) {
 		case "filter":
@@ -48,6 +53,7 @@ public class MassrenameShellCommand implements ShellCommand {
 			break;
 		case "execute":
 			print(env, execute(path1, path2, argumentArray[3], argumentArray[4]));
+			break;
 		}
 
 		return ShellStatus.CONTINUE;
@@ -55,13 +61,27 @@ public class MassrenameShellCommand implements ShellCommand {
 	}
 
 	private List<String> show(Path path1, String regex, String nameRegex) {
-		// TODO Auto-generated method stub
-		return null;
+		NameBuilderParser parser = new NameBuilderParser(nameRegex);
+		NameBuilder builder = parser.getNameBuilder();
+		Pattern pattern = Pattern.compile(regex);
+		List<String> list = new ArrayList<>();
+
+		for (File file : path1.toFile().listFiles()) {
+			Matcher matcher = pattern.matcher(file.getName().toString());
+
+			if (matcher.matches()) {
+				NameBuilderInfo info = new RegexInfo(matcher);
+				builder.execute(info);
+
+				String newName = ExecutorNameBuilder.getStringBuilder().toString();
+				list.add(file.getName().toString() + " => " + newName);
+			}
+		}
+
+		return list;
 	}
 
 	private List<String> execute(Path path1, Path path2, String regex, String nameRegex) {
-		List<String> list = show(path1, regex, nameRegex);
-
 		return null;
 	}
 

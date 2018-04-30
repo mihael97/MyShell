@@ -13,15 +13,23 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import hr.fer.zemris.java.hw07.shell.commands.CatShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.CdShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.CharsetsShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.CopyShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.CpTreeShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.DropdShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.ExitShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.Functions;
 import hr.fer.zemris.java.hw07.shell.commands.HelpShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.HexdumpShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.ListdShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.LsShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.MassrenameShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.MkdirShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.PopdShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.PushHdShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.PwdShellCommand;
+import hr.fer.zemris.java.hw07.shell.commands.RmtreeShellCommand;
 import hr.fer.zemris.java.hw07.shell.commands.TreeShellCommand;
 
 /**
@@ -82,6 +90,14 @@ public class MyShell implements Environment {
 		commands.put("hexdump", new HexdumpShellCommand());
 		commands.put("tree", new TreeShellCommand());
 		commands.put("massrename", new MassrenameShellCommand());
+		commands.put("cd", new CdShellCommand());
+		commands.put("dropd", new DropdShellCommand());
+		commands.put("listd", new ListdShellCommand());
+		commands.put("popd", new PopdShellCommand());
+		commands.put("pushhd", new PushHdShellCommand());
+		commands.put("pwd", new PwdShellCommand());
+		commands.put("rmtree", new RmtreeShellCommand());
+		commands.put("cptree", new CpTreeShellCommand());
 
 		currentDirectory = Paths.get(System.getProperty("user.dir")).toAbsolutePath().normalize();
 

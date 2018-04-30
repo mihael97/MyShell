@@ -19,7 +19,7 @@ public class CdShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private final static String name = "charsets";
+	private final static String name = "cd";
 	/**
 	 * Opis naredbe
 	 */
@@ -29,7 +29,7 @@ public class CdShellCommand implements ShellCommand {
 	 * Zadani kontruktor
 	 */
 	public CdShellCommand() {
-		description.add("Method which set current directory to another location");
+		description.add("Command which sets current directory to another location");
 	}
 
 	/**

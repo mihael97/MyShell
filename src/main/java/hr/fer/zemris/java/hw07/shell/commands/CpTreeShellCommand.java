@@ -1,8 +1,11 @@
 package hr.fer.zemris.java.hw07.shell.commands;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class CpTreeShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private final static String name = "charsets";
+	private final static String name = "cptree";
 	/**
 	 * Opis naredbe
 	 */
@@ -31,7 +34,7 @@ public class CpTreeShellCommand implements ShellCommand {
 	 * Zadani program
 	 */
 	public CpTreeShellCommand() {
-		description.add("Command copy context from one file to other");
+		description.add("Command copies context from one directory to other");
 	}
 
 	/**
@@ -49,32 +52,56 @@ public class CpTreeShellCommand implements ShellCommand {
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		String[] array = Functions.split(arguments, 2);
 
-		Path path1 = Paths.get(array[0]).resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(array[1]).resolve(env.getCurrentDirectory());
+		Path path1 = Paths.get(array[0]);//.resolve(env.getCurrentDirectory());
+		Path path2 = Paths.get(array[1]);//.resolve(env.getCurrentDirectory());
 
-		if (Files.isDirectory(path2)) {
-			copy(env, path1, path2);
+		if (!Files.isDirectory(path1)) {
+			System.err.println("Source file must be directory!");
+		} else if (Files.isDirectory(path2)) {
+			copy(path1.toFile(), Paths.get(path2.toString() + "\\" + path1.getFileName().toString()).toFile());
 		} else if (Files.isDirectory(path2.getParent())) {
-			copy(env, path1, Paths.get(path2.getParent().toString()));
+			copy(path1.toFile(),
+					Paths.get(path2.toString()).toFile());
 		} else {
-			System.err.println("Incorrect path. Can't be coppied!");
+			System.err.println("Incorrect path. Can't be copied! Destination path \'"+path2.toString()+"\' doesn't exist!");
 		}
 
 		return ShellStatus.CONTINUE;
 	}
 
 	/**
-	 * Metoda kopira strukturu jednog file u drugi
+	 * Metoda kopira strukturu jednog direktorija u drugi
 	 * 
-	 * @param env
-	 *            - ljuska
-	 * @param path1
+	 * @param file
 	 *            - izvorni direktorij
-	 * @param path2
+	 * @param file2
 	 *            - odredišni direktorij
 	 */
-	private void copy(Environment env, Path path1, Path path2) {
-		path2 = Paths.get(path2.toString() + "\\" + path1.getFileName().toString());
+	private void copy(File file, File file2) {
+
+		if (file.isDirectory()) {
+			// if destination folder doesn't exist,we need to make new one
+			if (!file2.exists()) {
+				file2.mkdir();
+			}
+
+			String[] files = file.list();
+
+			for (String pomFile : files) {
+				File srcFile = new File(file, pomFile);
+				File destFile = new File(file2, pomFile);
+
+				// Recursive function call
+				copy(srcFile, destFile);
+			}
+		} else {
+			try {
+				Files.copy(file.toPath(), file2.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 	}
 

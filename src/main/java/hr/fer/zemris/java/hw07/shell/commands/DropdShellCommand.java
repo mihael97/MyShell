@@ -20,7 +20,7 @@ public class DropdShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private final static String name = "charsets";
+	private final static String name = "dropd";
 	/**
 	 * Opis naredbe
 	 */

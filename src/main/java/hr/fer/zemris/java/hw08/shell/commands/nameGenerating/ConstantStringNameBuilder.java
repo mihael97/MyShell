@@ -7,12 +7,12 @@ public class ConstantStringNameBuilder implements NameBuilder {
 	private String string;
 
 	public ConstantStringNameBuilder(String string) {
-		this.string=Objects.requireNonNull(string);
+		this.string = Objects.requireNonNull(string);
 	}
-	
+
 	@Override
 	public void execute(NameBuilderInfo info) {
-		
+		info.getStringBuilder().append(string);
 	}
 
 }

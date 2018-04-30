@@ -41,75 +41,75 @@ public class HelpShellCommand implements ShellCommand {
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		if (arguments.trim().equals("")) {
 			for (String key : env.commands().keySet()) {
-				env.write(key);
+				env.writeln(key);
 			}
 		} else {
 			switch (arguments.trim()) {
 			case "charsets":
-				env.write(new CharsetsShellCommand().getCommandName() + " - "
+				env.writeln(new CharsetsShellCommand().getCommandName() + " - "
 						+ new CharsetsShellCommand().getCommandDescription().get(0));
 				break;
 			case "copy":
-				env.write(new CopyShellCommand().getCommandName() + " - "
+				env.writeln(new CopyShellCommand().getCommandName() + " - "
 						+ new CopyShellCommand().getCommandDescription().get(0));
 				break;
 			case "exit":
-				env.write(new ExitShellCommand().getCommandName() + " - "
+				env.writeln(new ExitShellCommand().getCommandName() + " - "
 						+ new ExitShellCommand().getCommandDescription().get(0));
 				break;
 			case "help":
-				env.write(getCommandName() + " - " + getCommandDescription().get(0));
+				env.writeln(getCommandName() + " - " + getCommandDescription().get(0));
 				break;
 			case "ls":
-				env.write(new LsShellCommand().getCommandName() + " - "
+				env.writeln(new LsShellCommand().getCommandName() + " - "
 						+ new LsShellCommand().getCommandDescription().get(0));
 				break;
 			case "mkdir":
-				env.write(new MkdirShellCommand().getCommandName() + " - "
+				env.writeln(new MkdirShellCommand().getCommandName() + " - "
 						+ new MkdirShellCommand().getCommandDescription().get(0));
 				break;
 			case "cd":
-				env.write(new CdShellCommand().getCommandName() + " - "
+				env.writeln(new CdShellCommand().getCommandName() + " - "
 						+ new CdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "cptree":
-				env.write(new CpTreeShellCommand().getCommandName() + " - "
+				env.writeln(new CpTreeShellCommand().getCommandName() + " - "
 						+ new CpTreeShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "listd":
-				env.write(new ListdShellCommand().getCommandName() + " - "
+				env.writeln(new ListdShellCommand().getCommandName() + " - "
 						+ new ListdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "dropd":
-				env.write(new DropdShellCommand().getCommandName() + " - "
+				env.writeln(new DropdShellCommand().getCommandName() + " - "
 						+ new DropdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "massrename":
-				env.write(new MassrenameShellCommand().getCommandName() + " - "
+				env.writeln(new MassrenameShellCommand().getCommandName() + " - "
 						+ new MassrenameShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "popd":
-				env.write(new PopdShellCommand().getCommandName() + " - "
+				env.writeln(new PopdShellCommand().getCommandName() + " - "
 						+ new PopdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "pushd":
-				env.write(new PushHdShellCommand().getCommandName() + " - "
+				env.writeln(new PushHdShellCommand().getCommandName() + " - "
 						+ new PushHdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "pwd":
-				env.write(new PwdShellCommand().getCommandName() + " - "
+				env.writeln(new PwdShellCommand().getCommandName() + " - "
 						+ new PwdShellCommand().getCommandDescription().get(0));
 
 				break;
 			case "rmtree":
-				env.write(new RmtreeShellCommand().getCommandName() + " - "
+				env.writeln(new RmtreeShellCommand().getCommandName() + " - "
 						+ new RmtreeShellCommand().getCommandDescription().get(0));
 
 				break;

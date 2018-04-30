@@ -6,32 +6,84 @@ import java.util.Objects;
 
 public class NameBuilderParser {
 
-	char[] expression;
-	NameBuilder executor;
+	private char[] expression;
+	private List<NameBuilder> list;
+	private int index;
 
 	public NameBuilderParser(String expression) {
 		this.expression = Objects.requireNonNull(expression).toCharArray();
+		list = new ArrayList<>();
+		index = 0;
 		parse();
 	}
 
 	private void parse() {
-		List<NameBuilder> list = new ArrayList<>();
+		try {
+			while ((index + 1) < expression.length) {
 
-		int index = 0;
+				if (expression[index] == '$') {
+					index += 2;
+					expressionReader();
+				} else {
+					regexReader();
+				}
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.err.println("Expression is not closed! ");
+		} catch (NumberFormatException e) {
+			System.err.println("Argument cannot be parsed to Number!");
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
+		}
+	}
 
-		while (index < expression.length) {
-			StringBuilder builder = new StringBuilder();
+	private void expressionReader() {
 
-			while (index<expression.length && expression[index] != '$' && expression[index + 1] != '{') {
-				builder.append(expression[index++]);
+		StringBuilder builder = new StringBuilder();
+		while (index < expression.length && expression[index] != '}') {
+			if (Character.isDigit(expression[index]) || expression[index] == ',') {
+				builder.append(expression[index]);
+			} else if (!Character.isWhitespace(expression[index])) {
+				throw new IllegalArgumentException(
+						"Unsupported character inside expression \'" + expression[index] + "\'!");
 			}
 
-			
+			index++;
 		}
 
+		String[] array = builder.toString().split(",");
+
+		index++;
+
+		if (array.length == 1) {
+			list.add(new RegexNameBuilder(Integer.parseInt(array[0])));
+		} else if (array.length == 2) {
+			list.add(new RegexNameBuilder(Integer.parseInt(array[0]), Integer.parseInt(array[1])));
+		} else {
+			throw new IllegalArgumentException("Too many arguments!");
+		}
+	}
+
+	private void regexReader() {
+
+		StringBuilder builder = new StringBuilder();
+
+		while (index < expression.length && expression[index] != '$' && (index + 1 < expression.length)
+				&& expression[index + 1] != '{') {
+
+			if (expression[index] == '$')
+				throw new IllegalArgumentException("After '$' there must be '{'");
+
+			builder.append(expression[index]);
+
+			index++;
+
+		}
+
+		list.add(new ConstantStringNameBuilder(builder.toString()));
 	}
 
 	public NameBuilder getNameBuilder() {
-		return executor;
+		return new ExecutorNameBuilder(list);
 	}
 }

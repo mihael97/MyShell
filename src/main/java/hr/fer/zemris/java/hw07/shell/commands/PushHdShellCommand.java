@@ -23,7 +23,7 @@ public class PushHdShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private static String name = "exit";
+	private static String name = "pushhd";
 	/**
 	 * Opis naredbe
 	 */

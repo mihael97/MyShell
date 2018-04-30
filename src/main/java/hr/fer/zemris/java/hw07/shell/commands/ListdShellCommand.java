@@ -20,7 +20,7 @@ public class ListdShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private final static String name = "charsets";
+	private final static String name = "listd";
 	/**
 	 * Opis naredbe
 	 */

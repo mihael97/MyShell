@@ -18,7 +18,7 @@ public class PwdShellCommand implements ShellCommand {
 	/**
 	 * Naziv naredbe
 	 */
-	private static final String name = "cat";
+	private static final String name = "pwd";
 	/**
 	 * Opis naredbe
 	 */

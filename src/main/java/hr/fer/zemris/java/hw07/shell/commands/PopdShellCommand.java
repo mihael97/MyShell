@@ -22,7 +22,7 @@ public class PopdShellCommand implements ShellCommand {
 	/**
 	 * Ime naredbe
 	 */
-	private static String name = "exit";
+	private static String name = "popd";
 	/**
 	 * Opis naredbe
 	 */
