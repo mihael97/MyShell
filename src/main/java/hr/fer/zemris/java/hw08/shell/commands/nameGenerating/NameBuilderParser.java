@@ -7,7 +7,7 @@ import java.util.Objects;
 public class NameBuilderParser {
 
 	char[] expression;
-	ExecutorNameBuilder executor;
+	NameBuilder executor;
 
 	public NameBuilderParser(String expression) {
 		this.expression = Objects.requireNonNull(expression).toCharArray();
@@ -22,11 +22,10 @@ public class NameBuilderParser {
 		while (index < expression.length) {
 			StringBuilder builder = new StringBuilder();
 
-			while (expression[index] != '$') {
+			while (index<expression.length && expression[index] != '$' && expression[index + 1] != '{') {
 				builder.append(expression[index++]);
 			}
-			
-			
+
 			
 		}
 
