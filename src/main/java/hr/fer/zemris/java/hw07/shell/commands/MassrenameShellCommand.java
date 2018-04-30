@@ -1,6 +1,8 @@
 package hr.fer.zemris.java.hw07.shell.commands;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,6 +19,13 @@ import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.NameBuilderInfo;
 import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.NameBuilderParser;
 import hr.fer.zemris.java.hw08.shell.commands.nameGenerating.RegexInfo;
 
+/**
+ * Razred koji implementira metode za preimneovanje i premještanje direktorija i
+ * datoteka
+ * 
+ * @author Mihael
+ *
+ */
 public class MassrenameShellCommand implements ShellCommand {
 
 	/**
@@ -32,27 +41,37 @@ public class MassrenameShellCommand implements ShellCommand {
 	 * Zadani program
 	 */
 	public MassrenameShellCommand() {
-		description.add("Command contains methods for renaming and moving directories");
+		description.add(
+				"Command contains methods for renaming and moving directories and grouping and filtering by regex");
 	}
 
+	/**
+	 * Metoda ovisno o argumentima poziva metodu filtriranje,grupiranje ili
+	 * premještanje(preimneovanje)
+	 * 
+	 * @param env
+	 *            - ljuska
+	 * @param arguments
+	 *            - argumenti
+	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		String[] argumentArray = Functions.split(arguments, 5);
-		Path path1 = Paths.get(argumentArray[0]);//.resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(argumentArray[1]);//.resolve(env.getCurrentDirectory());
+		Path path1 = Paths.get(argumentArray[0]);// .resolve(env.getCurrentDirectory());
+		Path path2 = Paths.get(argumentArray[1]);// .resolve(env.getCurrentDirectory());
 
 		switch (argumentArray[2]) {
 		case "filter":
-			print(env, filter(path1, env, argumentArray[3]));
+			print(env, filter(path1, argumentArray[3]));
 			break;
 		case "groups":
-			print(env, group(path1, env, argumentArray[3]));
+			print(env, group(path1, argumentArray[3]));
 			break;
 		case "show":
-			print(env, show(path1, argumentArray[3], argumentArray[4]));
+			print(env, show(path1, path2, argumentArray[3], argumentArray[4], false));
 			break;
 		case "execute":
-			print(env, execute(path1, path2, argumentArray[3], argumentArray[4]));
+			print(env, show(path1, path2, argumentArray[3], argumentArray[4], true));
 			break;
 		}
 
@@ -60,43 +79,93 @@ public class MassrenameShellCommand implements ShellCommand {
 
 	}
 
-	private List<String> show(Path path1, String regex, String nameRegex) {
+	/**
+	 * @param source
+	 *            - izvor
+	 * @param destination
+	 *            - odredište
+	 * @param regex
+	 *            - regularni izraz za datoteke
+	 * @param nameRegex
+	 *            - regularni izraz za naziv datoteke pri preimenovanju
+	 * @param flag
+	 *            - zastavica <code>true</code> ako se radi i premještanje inače
+	 *            <code>false</code>
+	 * @return lista imena datoteka
+	 */
+	private List<String> show(Path source, Path destination, String regex, String nameRegex, boolean flag) {
 		NameBuilderParser parser = new NameBuilderParser(nameRegex);
 		NameBuilder builder = parser.getNameBuilder();
 		Pattern pattern = Pattern.compile(regex);
 		List<String> list = new ArrayList<>();
 
-		for (File file : path1.toFile().listFiles()) {
+		for (File file : source.toFile().listFiles()) {
 			Matcher matcher = pattern.matcher(file.getName().toString());
 
 			if (matcher.matches()) {
 				NameBuilderInfo info = new RegexInfo(matcher);
 				builder.execute(info);
 
-				String newName = ExecutorNameBuilder.getStringBuilder().toString();
-				list.add(file.getName().toString() + " => " + newName);
+				String newName = (flag == true ? destination.toString() + "\\" : "")
+						+ ExecutorNameBuilder.getStringBuilder().toString();
+				String fileName = (flag == true ? source.toString() + "\\" : "") + file.getName().toString();
+				list.add(fileName + " => " + newName);
+
+				if (flag) {
+					copyFiles(file.toPath(), Paths.get(newName));
+				}
+
 			}
 		}
 
 		return list;
 	}
 
-	private List<String> execute(Path path1, Path path2, String regex, String nameRegex) {
-		return null;
+	/**
+	 * Metoda premješta konkretan file na drugu lokaciju
+	 * 
+	 * @param source
+	 *            - izvor
+	 * @param target
+	 *            - odredište
+	 */
+	private void copyFiles(Path source, Path target) {
+		try {
+			Files.move(source, target);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * Metoda koja ispisuje liste
+	 * 
+	 * @param env
+	 *            - ljuska
+	 * @param list
+	 *            - lista
+	 */
 	private void print(Environment env, List<String> list) {
 		for (String string : list) {
 			env.writeln(string);
 		}
 	}
 
-	private List<String> group(Path path1, Environment env, String regex) {
+	/**
+	 * Metoda koja grupira u odnosu na dani regex
+	 * 
+	 * @param source
+	 *            - izvor
+	 * @param regex
+	 *            - regularni izraz
+	 * @return lista imena datoteka
+	 */
+	private List<String> group(Path source, String regex) {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher;
 		List<String> list = new ArrayList<>();
 
-		for (String string : filter(path1, env, regex)) {
+		for (String string : filter(source, regex)) {
 			matcher = pattern.matcher(string);
 			StringBuilder builder = new StringBuilder();
 			while (matcher.find()) {
@@ -113,8 +182,17 @@ public class MassrenameShellCommand implements ShellCommand {
 		return list;
 	}
 
-	private List<String> filter(Path path1, Environment env, String regex) {
-		File[] files = path1.toFile().listFiles();
+	/**
+	 * Metoda filtira datoteke u odnosu na njihove nazive i podudaranosti sa regexom
+	 * 
+	 * @param source
+	 *            - izvor
+	 * @param regex
+	 *            - regularni izraz
+	 * @return listu imena datoteka
+	 */
+	private List<String> filter(Path source, String regex) {
+		File[] files = source.toFile().listFiles();
 		List<String> forReturn = new ArrayList<>();
 		Pattern pattern = Pattern.compile(regex);
 
@@ -127,11 +205,21 @@ public class MassrenameShellCommand implements ShellCommand {
 		return forReturn;
 	}
 
+	/**
+	 * Metoda vreća ime naredbe
+	 * 
+	 * @return String - ime naredbe
+	 */
 	@Override
 	public String getCommandName() {
 		return name;
 	}
 
+	/**
+	 * Metoda vraća opis naredbe
+	 * 
+	 * @return {@link List} - opis naredbe
+	 */
 	@Override
 	public List<String> getCommandDescription() {
 		return description;
