@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw07.shell.commands;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,9 @@ public class CdShellCommand implements ShellCommand {
 	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		env.setCurrentDirectory(Paths.get(Functions.split(arguments, 1)[0]).resolve(env.getCurrentDirectory()));
+		Path path = Paths.get(Functions.split(arguments, 1)[0]);
+		path.resolve(env.getCurrentDirectory());
+		env.setCurrentDirectory(path);
 
 		return ShellStatus.CONTINUE;
 	}

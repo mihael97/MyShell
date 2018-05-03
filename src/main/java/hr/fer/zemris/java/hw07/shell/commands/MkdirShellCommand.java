@@ -2,6 +2,7 @@ package hr.fer.zemris.java.hw07.shell.commands;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,10 @@ public class MkdirShellCommand implements ShellCommand {
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		try {
-			Files.createDirectories(Paths.get(Functions.split(arguments, 1)[0]).resolve(env.getCurrentDirectory()));
+			Path path=Paths.get(Functions.split(arguments, 1)[0]);
+			path.resolve(env.getCurrentDirectory());
+			System.out.println(path);
+			Files.createDirectory(path);
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
 		} catch (IOException e) {

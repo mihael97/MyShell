@@ -143,7 +143,7 @@ public class MyShell implements Environment {
 	}
 
 	/**
-	 * Metoda ispisuje naredbu na standardni izlaz
+	 * Metoda ispisuje naredbu na standardni izlaz u istom redku
 	 * 
 	 * @param text
 	 *            - naredba za ispis
@@ -158,14 +158,19 @@ public class MyShell implements Environment {
 	}
 
 	/**
-	 * Metoda ispisuje naredbu na standardni izlaz
+	 * Metoda ispisuje naredbu na standardni izlaz tako da svaki zapis stavi u novi
+	 * red
 	 * 
 	 * @param text
 	 *            - naredba za ispis
 	 */
 	@Override
 	public void writeln(String text) throws ShellIOException {
-		System.out.println(text);
+		try {
+			System.out.println(text);
+		} catch (Exception e) {
+			throw new ShellIOException("Exception during writing on standard output!");
+		}
 	}
 
 	/**

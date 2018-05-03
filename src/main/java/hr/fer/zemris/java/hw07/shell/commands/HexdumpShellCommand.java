@@ -39,7 +39,7 @@ public class HexdumpShellCommand implements ShellCommand {
 	 * @param env
 	 *            - ljuska
 	 * @param arguments
-	 *            - argument(path do datoteke=)
+	 *            - argument(path do datoteke)
 	 * 
 	 * @throws IOException
 	 *             - ukoliko dođe do problema sa čitanjem datoteke

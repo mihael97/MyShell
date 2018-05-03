@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw07.shell.commands;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,17 +43,42 @@ public class RmtreeShellCommand implements ShellCommand {
 	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		Path path = Paths.get(Functions.split(arguments, 1)[0]).resolve(env.getCurrentDirectory());
-
+		Path path = Paths.get(Functions.split(arguments, 1)[0]);
+		System.out.println(path);
+		path.resolve(env.getCurrentDirectory());
+		System.out.println(path);
 		if (Files.isDirectory(path)) {
 			try {
-				Files.delete(path);
+				delete(path);
 			} catch (IOException e) {
-				System.err.println(e.getMessage());
+				System.err.println("Problem with path: " + e.getMessage());
 			}
 		}
 
 		return ShellStatus.CONTINUE;
+	}
+
+	/**
+	 * Metoda koja rekurzivno prolazi kroz cijelo stablo direktorija i briše svaku
+	 * datoteku
+	 * 
+	 * @param path
+	 *            - put do trenutne datoteke
+	 * @throws IOException
+	 *             - u slučaju problema sa brisanjem
+	 */
+	private void delete(Path path) throws IOException {
+
+		if (Files.isDirectory(path)) {
+			File[] files = path.toFile().listFiles();
+
+			for (File pomFile : files) {
+				delete(pomFile.toPath());
+			}
+		}
+
+		Files.delete(path);
+
 	}
 
 	/**

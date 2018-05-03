@@ -50,9 +50,10 @@ public class PushHdShellCommand implements ShellCommand {
 	@SuppressWarnings("unchecked")
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		Path path = Paths.get(Functions.split(arguments, 1)[1]).resolve(env.getCurrentDirectory());
+		Path path = Paths.get(Functions.split(arguments, 1)[0]);
+		path.resolve(env.getCurrentDirectory());
 		Stack<Path> stack;
-		if (!Files.isDirectory(path)) {
+		if (Files.isDirectory(path)) {
 			if ((env.getSharedData("cdstack")) != null) {
 				stack = (Stack<Path>) env.getSharedData(Functions.CDSTACK);
 			} else {

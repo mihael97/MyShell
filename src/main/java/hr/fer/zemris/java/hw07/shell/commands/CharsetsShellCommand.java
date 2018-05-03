@@ -45,7 +45,7 @@ public class CharsetsShellCommand implements ShellCommand {
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		for (String string : Charset.availableCharsets().keySet()) {
-			env.write(string);
+			env.writeln(string);
 		}
 
 		return ShellStatus.CONTINUE;

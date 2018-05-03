@@ -57,22 +57,28 @@ public class MassrenameShellCommand implements ShellCommand {
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		String[] argumentArray = Functions.split(arguments, 5);
-		Path path1 = Paths.get(argumentArray[0]).resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(argumentArray[1]).resolve(env.getCurrentDirectory());
+		Path path1 = Paths.get(argumentArray[0]);
+		path1.resolve(env.getCurrentDirectory());
+		Path path2 = Paths.get(argumentArray[1]);
+		path2.resolve(env.getCurrentDirectory());
 
-		switch (argumentArray[2]) {
-		case "filter":
-			print(env, filter(path1, argumentArray[3]));
-			break;
-		case "groups":
-			print(env, group(path1, argumentArray[3]));
-			break;
-		case "show":
-			print(env, show(path1, path2, argumentArray[3], argumentArray[4], false));
-			break;
-		case "execute":
-			print(env, show(path1, path2, argumentArray[3], argumentArray[4], true));
-			break;
+		try {
+			switch (argumentArray[2]) {
+			case "filter":
+				print(env, filter(path1, argumentArray[3]));
+				break;
+			case "groups":
+				print(env, group(path1, argumentArray[3]));
+				break;
+			case "show":
+				print(env, show(path1, path2, argumentArray[3], argumentArray[4], false));
+				break;
+			case "execute":
+				print(env, show(path1, path2, argumentArray[3], argumentArray[4], true));
+				break;
+			}
+		} catch (Exception e) {
+			System.err.println("Unexpected exception: " + e.getMessage());
 		}
 
 		return ShellStatus.CONTINUE;
@@ -96,7 +102,7 @@ public class MassrenameShellCommand implements ShellCommand {
 	private List<String> show(Path source, Path destination, String regex, String nameRegex, boolean flag) {
 		NameBuilderParser parser = new NameBuilderParser(nameRegex);
 		NameBuilder builder = parser.getNameBuilder();
-		Pattern pattern = Pattern.compile(regex,Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 		List<String> list = new ArrayList<>();
 
 		for (File file : source.toFile().listFiles()) {
@@ -161,7 +167,7 @@ public class MassrenameShellCommand implements ShellCommand {
 	 * @return lista imena datoteka
 	 */
 	private List<String> group(Path source, String regex) {
-		Pattern pattern = Pattern.compile(regex,Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 		Matcher matcher;
 		List<String> list = new ArrayList<>();
 
@@ -194,7 +200,7 @@ public class MassrenameShellCommand implements ShellCommand {
 	private List<String> filter(Path source, String regex) {
 		File[] files = source.toFile().listFiles();
 		List<String> forReturn = new ArrayList<>();
-		Pattern pattern = Pattern.compile(regex,Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
 
 		for (File file : files) {
 			if (file.isFile() && pattern.matcher(file.getName()).matches()) {
