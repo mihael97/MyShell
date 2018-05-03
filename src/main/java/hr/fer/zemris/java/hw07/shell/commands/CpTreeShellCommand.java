@@ -52,8 +52,8 @@ public class CpTreeShellCommand implements ShellCommand {
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		String[] array = Functions.split(arguments, 2);
 
-		Path path1 = Paths.get(array[0]);//.resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(array[1]);//.resolve(env.getCurrentDirectory());
+		Path path1 = Paths.get(array[0]).resolve(env.getCurrentDirectory());
+		Path path2 = Paths.get(array[1]).resolve(env.getCurrentDirectory());
 
 		if (!Files.isDirectory(path1)) {
 			System.err.println("Source file must be directory!");

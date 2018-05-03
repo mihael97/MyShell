@@ -28,7 +28,7 @@ public class TreeShellCommand implements ShellCommand {
 	 * Inicijalni konstruktor
 	 */
 	public TreeShellCommand() {
-		description.add("Command prints file tree of directory given directory");
+		description.add("Command prints file tree of given directory");
 	}
 
 	/**

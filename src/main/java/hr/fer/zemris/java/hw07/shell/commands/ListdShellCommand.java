@@ -30,7 +30,7 @@ public class ListdShellCommand implements ShellCommand {
 	 * Zadani program
 	 */
 	public ListdShellCommand() {
-		description.add("Method erases all ex workspaces");
+		description.add("Command prints all previous workspaces");
 	}
 
 	/**
@@ -53,14 +53,14 @@ public class ListdShellCommand implements ShellCommand {
 			}
 
 			if (stack.size() == 0)
-				env.write("Nema pohranjenih direktorija!");
+				env.write("There is not any stored directory!");
 
 			for (int i = stack.size() - 1; i >= 0; i--) {
 				env.writeln(stack.get(i).toString());
 			}
 
 		} catch (ClassCastException e) {
-			System.err.println("Object cannot be cast to stack!");
+			System.err.println("Object cannot be casted to stack!");
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
 		}
