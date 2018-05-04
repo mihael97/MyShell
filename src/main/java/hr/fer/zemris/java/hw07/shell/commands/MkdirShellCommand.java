@@ -52,7 +52,6 @@ public class MkdirShellCommand implements ShellCommand {
 		try {
 			Path path=Paths.get(Functions.split(arguments, 1)[0]);
 			path.resolve(env.getCurrentDirectory());
-			System.out.println(path);
 			Files.createDirectory(path);
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());

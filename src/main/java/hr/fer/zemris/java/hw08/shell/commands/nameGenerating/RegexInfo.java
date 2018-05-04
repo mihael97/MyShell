@@ -27,6 +27,8 @@ public class RegexInfo implements NameBuilderInfo {
 	 * 
 	 * @param matcher
 	 *            - patternov matcher
+	 * @throws NullPointerException
+	 *             - ako je argument null
 	 */
 	public RegexInfo(Matcher matcher) {
 		this.matcher = Objects.requireNonNull(matcher);

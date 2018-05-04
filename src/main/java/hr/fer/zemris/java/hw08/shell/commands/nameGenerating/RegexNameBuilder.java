@@ -1,5 +1,7 @@
 package hr.fer.zemris.java.hw08.shell.commands.nameGenerating;
 
+import java.util.Objects;
+
 /**
  * 
  * Razred koji implementira strukturu koja je moguće sadrži redni broj grupe i
@@ -48,9 +50,12 @@ public class RegexNameBuilder implements NameBuilder {
 	 * 
 	 * @param info
 	 *            - infomacije
+	 * @throws NullPointerException
+	 *             - ako je argument null
 	 */
 	@Override
 	public void execute(NameBuilderInfo info) {
+		Objects.requireNonNull(info);
 		StringBuilder builder = new StringBuilder();
 
 		if (info.getGroup(group).length() < length) {

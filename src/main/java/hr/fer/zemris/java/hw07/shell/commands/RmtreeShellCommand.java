@@ -44,9 +44,7 @@ public class RmtreeShellCommand implements ShellCommand {
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
 		Path path = Paths.get(Functions.split(arguments, 1)[0]);
-		System.out.println(path);
 		path.resolve(env.getCurrentDirectory());
-		System.out.println(path);
 		if (Files.isDirectory(path)) {
 			try {
 				delete(path);

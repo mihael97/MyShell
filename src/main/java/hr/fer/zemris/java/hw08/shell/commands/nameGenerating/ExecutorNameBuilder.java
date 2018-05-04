@@ -18,7 +18,7 @@ public class ExecutorNameBuilder implements NameBuilder {
 	/**
 	 * String builder kako bi se izbjegli sukobi sa policijom.
 	 */
-	static StringBuilder stringBuilder;
+	private static StringBuilder stringBuilder;
 
 	/**
 	 * Konstruktor koji inicijalizira novog izvođača
@@ -26,8 +26,8 @@ public class ExecutorNameBuilder implements NameBuilder {
 	 * @param list
 	 *            - lista djece,članova
 	 * 
-	 * @throws ako
-	 *             je list null
+	 * @throws NullPointerException
+	 *             - je lista <code>null</code>
 	 */
 	public ExecutorNameBuilder(List<NameBuilder> list) {
 		this.list = Objects.requireNonNull(list);
@@ -38,19 +38,23 @@ public class ExecutorNameBuilder implements NameBuilder {
 	 * Metoda izvršava metodu tako da pozvove metodu xecutr na svom spomenutom
 	 * mjestu
 	 * 
-	 * @oaram info - početni informacije - direktorij
+	 * @param info
+	 *            - početne informacije - direktorij
+	 * @throws NullPointerException
+	 *             - ako je argument <code>null</code>
 	 */
 	@Override
 	public void execute(NameBuilderInfo info) {
+		Objects.requireNonNull(info);
 		list.forEach(e -> e.execute(info));
 
 		stringBuilder = new StringBuilder(info.getStringBuilder());
 	}
 
 	/**
-	 * Metoda koja računa sljedeći znak
+	 * Metoda koja računa vraća do sada napisna sadržaj
 	 * 
-	 * @return strimg bulder sa do sada napisanim sadržajem
+	 * @return string builder sa do sada napisanim sadržajem
 	 */
 	public static Object getStringBuilder() {
 		return stringBuilder;

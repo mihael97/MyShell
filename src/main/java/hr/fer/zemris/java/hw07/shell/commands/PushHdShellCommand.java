@@ -33,7 +33,7 @@ public class PushHdShellCommand implements ShellCommand {
 	 * Zadani konstruktor
 	 */
 	public PushHdShellCommand() {
-		description.add("Method pushes current workspace on stack,and sets for new one path from argument");
+		description.add("Command pushes current workspace on stack,and sets for new one path from argument");
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class PushHdShellCommand implements ShellCommand {
 			} else {
 				stack = new Stack<>();
 			}
-			stack.add(path);
+			stack.add(env.getCurrentDirectory());
 			env.setSharedData(Functions.CDSTACK, stack);
 			env.setCurrentDirectory(path);
 

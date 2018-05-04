@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ConstantStringNameBuilder implements NameBuilder {
 
 	/**
-	 * String kojeg ćemo pohrantii u novom
+	 * String kojeg ćemo pohraniti
 	 */
 	private String string;
 
@@ -21,6 +21,8 @@ public class ConstantStringNameBuilder implements NameBuilder {
 	 * 
 	 * @param string
 	 *            - sadržaj čvora
+	 * @throws NullPointerException
+	 *             - ako je argument <code>null</code>
 	 */
 	public ConstantStringNameBuilder(String string) {
 		this.string = Objects.requireNonNull(string);
@@ -32,10 +34,14 @@ public class ConstantStringNameBuilder implements NameBuilder {
 	 * @param info
 	 *            - informacija o načinu izrade
 	 * 
+	 * @throws NullPointerException
+	 *             - ako je argument <code>null</code>
+	 * 
 	 * @return informacije o čvoru
 	 */
 	@Override
 	public void execute(NameBuilderInfo info) {
+		Objects.requireNonNull(info);
 		info.getStringBuilder().append(string);
 	}
 
