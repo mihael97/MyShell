@@ -101,6 +101,10 @@ slika2-zadar.jpg
 slika3-zadar.jpg
 slika4-zadar.jpg
 
+massrename E:\Eclipse\Java\Zadaca\hw08-0036503447\proba proba2 filter "slika\d+-[^.]+\.jpg"
+massrename proba proba2 filter "slika\d+-[^.]+\.jpg"
+
+
 (pri čemu redoslijed u ispisu nije bitan i može ovisiti o načinu na koji dohvaćate datoteke direktorija DIR1. Primijetite, 
 MASKU ili pišemo pod navodnicima (pa joj pripada sve do sljedećih navodnika, i nema nikakvih escapeova za našu ljusku- sve što 
 unutra piše doista se predaje patternu), ili je pišemo bez navodnika pa joj pripada sve do prvog razmaka/taba/... (i opet nema 
@@ -132,6 +136,9 @@ slika1-zadar.jpg 0: slika1-zadar.jpg 1: 1 2: zadar
 slika2-zadar.jpg 0: slika2-zadar.jpg 1: 2 2: zadar
 slika3-zadar.jpg 0: slika3-zadar.jpg 1: 3 2: zadar
 slika4-zadar.jpg 0: slika4-zadar.jpg 1: 4 2: zadar
+
+massrename proba proba2 groups slika(\d+)-([^.]+)\.jpg
+
 
 Kako u maski imamo dvije zagrade - definirane su dvije grupe (grupa 1 i grupa 2) te implicitna grupa 0; stoga 
 iza imena svake datoteke imamo za grupe 0, 1 i 2 prikazano na što su se mapirale.
@@ -175,6 +182,9 @@ DIR1/slika1-zadar.jpg => DIR2/gradovi-zadar-001.jpg
 DIR1/slika2-zadar.jpg => DIR2/gradovi-zadar-002.jpg
 DIR1/slika3-zadar.jpg => DIR2/gradovi-zadar-003.jpg
 DIR1/slika4-zadar.jpg => DIR2/gradovi-zadar-004.jpg
+
+massrename proba proba2 execute slika(\d+)-([^.]+)\.jpg gradovi-${2}-${1,03}.jpg
+
 
 Naredba massrename svakim pokretanjem obavlja sve relevantne korake ispočetka te nigdje ništa ne pamti. Tako podnaredba 
 groups najprije obavlja filtriranje, a potom za sve selektirane datoteke ispisuje mapirane grupe.
