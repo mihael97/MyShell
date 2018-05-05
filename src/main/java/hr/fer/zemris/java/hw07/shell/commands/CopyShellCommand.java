@@ -53,8 +53,10 @@ public class CopyShellCommand implements ShellCommand {
 			System.err.println("Wrong number of arguments!");
 		} else {
 			try {
-				Path path1 = Paths.get(array[0]).resolve(env.getCurrentDirectory());
-				Path path2 = Paths.get(array[1]).resolve(env.getCurrentDirectory());
+				Path path1 = Paths.get(array[0]);
+				path1.resolve(env.getCurrentDirectory());
+				Path path2 = Paths.get(array[1]);
+				path2.resolve(env.getCurrentDirectory());
 
 				if (!path1.toFile().isFile()) {
 					System.err.println("First argument must be file!");
@@ -62,7 +64,8 @@ public class CopyShellCommand implements ShellCommand {
 
 					if (path2.toFile().isDirectory()) {
 						path2 = Paths.get(path2.toString() + "/" + path1.getFileName())
-								.resolve(env.getCurrentDirectory());
+								;
+						path2.resolve(env.getCurrentDirectory());
 					}
 
 					if (path2.toFile().exists()) {

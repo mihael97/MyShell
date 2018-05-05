@@ -50,23 +50,29 @@ public class PushHdShellCommand implements ShellCommand {
 	@SuppressWarnings("unchecked")
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		Path path = Paths.get(Functions.split(arguments, 1)[0]);
-		path.resolve(env.getCurrentDirectory());
-		Stack<Path> stack;
-		if (Files.isDirectory(path)) {
-			if ((env.getSharedData("cdstack")) != null) {
-				stack = (Stack<Path>) env.getSharedData(Functions.CDSTACK);
-			} else {
-				stack = new Stack<>();
-			}
-			stack.add(env.getCurrentDirectory());
-			env.setSharedData(Functions.CDSTACK, stack);
-			env.setCurrentDirectory(path);
+		try {
+			Path path = Paths.get(Functions.split(arguments, 1)[0]);
+			path.resolve(env.getCurrentDirectory());
+			Stack<Path> stack;
+			if (Files.isDirectory(path)) {
+				if ((env.getSharedData("cdstack")) != null) {
+					stack = (Stack<Path>) env.getSharedData(Functions.CDSTACK);
+				} else {
+					stack = new Stack<>();
+				}
+				stack.add(env.getCurrentDirectory());
+				env.setSharedData(Functions.CDSTACK, stack);
+				env.setCurrentDirectory(path);
 
-			return ShellStatus.CONTINUE;
+				return ShellStatus.CONTINUE;
+			}
+
+			System.err.println("Path \'" + path.toString() + "\' is not directory!");
+
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
 		}
 
-		System.err.println("Path \'" + path.toString() + "\' is not directory!");
 		return ShellStatus.CONTINUE;
 	}
 

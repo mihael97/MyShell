@@ -50,20 +50,26 @@ public class CpTreeShellCommand implements ShellCommand {
 	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		String[] array = Functions.split(arguments, 2);
+		try {
+			String[] array = Functions.split(arguments, 2);
 
-		Path path1 = Paths.get(array[0]).resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(array[1]).resolve(env.getCurrentDirectory());
+			Path path1 = Paths.get(array[0]);
+			path1.resolve(env.getCurrentDirectory());
+			Path path2 = Paths.get(array[1]);
+			path2.resolve(env.getCurrentDirectory());
 
-		if (!Files.isDirectory(path1)) {
-			System.err.println("Source file must be directory!");
-		} else if (Files.isDirectory(path2)) {
-			copy(path1.toFile(), Paths.get(path2.toString() + "\\" + path1.getFileName().toString()).toFile());
-		} else if (Files.isDirectory(path2.getParent())) {
-			copy(path1.toFile(),
-					Paths.get(path2.toString()).toFile());
-		} else {
-			System.err.println("Incorrect path. Can't be copied! Destination path \'"+path2.toString()+"\' doesn't exist!");
+			if (!Files.isDirectory(path1)) {
+				System.err.println("Source file must be directory!");
+			} else if (Files.isDirectory(path2)) {
+				copy(path1.toFile(), Paths.get(path2.toString() + "\\" + path1.getFileName().toString()).toFile());
+			} else if (Files.isDirectory(path2.getParent())) {
+				copy(path1.toFile(), Paths.get(path2.toString()).toFile());
+			} else {
+				System.err.println("Incorrect path. Can't be copied! Destination path \'" + path2.toString()
+						+ "\' doesn't exist!");
+			}
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
 		}
 
 		return ShellStatus.CONTINUE;

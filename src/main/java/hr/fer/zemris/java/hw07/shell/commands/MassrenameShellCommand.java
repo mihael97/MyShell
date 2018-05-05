@@ -56,29 +56,39 @@ public class MassrenameShellCommand implements ShellCommand {
 	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		String[] argumentArray = Functions.split(arguments, 5);
-		Path path1 = Paths.get(argumentArray[0]);
-		path1.resolve(env.getCurrentDirectory());
-		Path path2 = Paths.get(argumentArray[1]);
-		path2.resolve(env.getCurrentDirectory());
-
 		try {
-			switch (argumentArray[2]) {
-			case "filter":
-				print(env, filter(path1, argumentArray[3]));
-				break;
-			case "groups":
-				print(env, group(path1, argumentArray[3]));
-				break;
-			case "show":
-				print(env, show(path1, path2, argumentArray[3], argumentArray[4], false));
-				break;
-			case "execute":
-				print(env, show(path1, path2, argumentArray[3], argumentArray[4], true));
-				break;
+			String[] argumentArray = Functions.split(arguments, 5);
+
+			if (argumentArray.length < 5) {
+				throw new IllegalArgumentException(
+						"Not enough arguments. Number should be 5 but is " + argumentArray.length);
 			}
-		} catch (Exception e) {
-			System.err.println("Unexpected exception: " + e.getMessage());
+
+			Path path1 = Paths.get(argumentArray[0]);
+			path1.resolve(env.getCurrentDirectory());
+			Path path2 = Paths.get(argumentArray[1]);
+			path2.resolve(env.getCurrentDirectory());
+
+			try {
+				switch (argumentArray[2]) {
+				case "filter":
+					print(env, filter(path1, argumentArray[3]));
+					break;
+				case "groups":
+					print(env, group(path1, argumentArray[3]));
+					break;
+				case "show":
+					print(env, show(path1, path2, argumentArray[3], argumentArray[4], false));
+					break;
+				case "execute":
+					print(env, show(path1, path2, argumentArray[3], argumentArray[4], true));
+					break;
+				}
+			} catch (Exception e) {
+				System.err.println("Unexpected exception: " + e.getMessage());
+			}
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
 		}
 
 		return ShellStatus.CONTINUE;

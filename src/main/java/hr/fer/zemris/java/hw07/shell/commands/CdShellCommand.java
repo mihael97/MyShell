@@ -1,5 +1,6 @@
 package hr.fer.zemris.java.hw07.shell.commands;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -45,9 +46,17 @@ public class CdShellCommand implements ShellCommand {
 	 */
 	@Override
 	public ShellStatus executeCommand(Environment env, String arguments) {
-		Path path = Paths.get(Functions.split(arguments, 1)[0]);
-		path.resolve(env.getCurrentDirectory());
-		env.setCurrentDirectory(path);
+		try {
+			Path path = Paths.get(Functions.split(arguments, 1)[0]);
+			path.resolve(env.getCurrentDirectory());
+			if (Files.isDirectory(path)) {
+				env.setCurrentDirectory(path);
+			} else {
+				System.err.println("Given path: \'" + path.toString() + "\' is not a directory!");
+			}
+		} catch (IllegalArgumentException e) {
+			System.err.println(e.getMessage());
+		}
 
 		return ShellStatus.CONTINUE;
 	}

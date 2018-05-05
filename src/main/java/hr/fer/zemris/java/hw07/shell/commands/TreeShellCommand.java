@@ -47,7 +47,7 @@ public class TreeShellCommand implements ShellCommand {
 		try {
 			env.write(makeTree(Functions.split(arguments, 1)[0], 0));
 		} catch (IllegalArgumentException e) {
-			System.err.println("Argument has unclosed or unopened quotation marks");
+			System.err.println(e.getMessage());
 		}
 		return ShellStatus.CONTINUE;
 	}

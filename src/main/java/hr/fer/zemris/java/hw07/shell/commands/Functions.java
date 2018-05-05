@@ -124,8 +124,9 @@ public class Functions {
 			if (index < length) {
 				throw new IllegalArgumentException("Too many arguments!" + index + " " + length);
 			}
+
 		} catch (IndexOutOfBoundsException e) {
-			System.err.println("Error!");
+			System.err.println("ERROR!");
 		}
 
 		return forReturn;

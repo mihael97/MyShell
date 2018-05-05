@@ -52,20 +52,21 @@ public class PopdShellCommand implements ShellCommand {
 			Stack<Path> stack = (Stack<Path>) env.getSharedData(Functions.CDSTACK);
 
 			if (stack == null) {
-				throw new IllegalArgumentException("Stack is null!");
+				System.err.println("Stack is null!");
 			}
 
-			if (stack.size() == 0) {
-				throw new IllegalArgumentException("Stack is empty!");
-			}
-
-			Path path = stack.pop();
-
-			if (Files.isDirectory(path)) {
-				env.setCurrentDirectory(path);
-				env.setSharedData(Functions.CDSTACK, stack);
+			else if (stack.size() == 0) {
+				System.err.println("Stack is empty!");
 			} else {
-				throw new IllegalArgumentException("Path doesn't exist or it's not directory!");
+
+				Path path = stack.pop();
+
+				if (Files.isDirectory(path)) {
+					env.setCurrentDirectory(path);
+					env.setSharedData(Functions.CDSTACK, stack);
+				} else {
+					System.err.println("Path doesn't exist or it's not directory!");
+				}
 			}
 
 		} catch (ClassCastException e) {
